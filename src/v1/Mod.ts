@@ -4,6 +4,9 @@ import CurseForgeFile from './File.js';
 import {CurseForgeGetModFilesOptions} from './Options.js';
 import {CurseForgeCategory, CurseForgeFileIndex, CurseForgeGetModResponseRaw, CurseForgeModAsset, CurseForgeModAuthor, CurseForgeModLinks, CurseForgeModStatus} from './Types.js';
 
+/**
+ * Represents a mod.
+ */
 export default class CurseForgeMod extends CurseForgeBase {
 	/** The mod id. */
 	id: number;
@@ -56,6 +59,12 @@ export default class CurseForgeMod extends CurseForgeBase {
 	/** The mod's thumbs up count. */
 	thumbsUpCount: number;
 
+	/**
+	 * Constructs a new mod representation.
+	 * @internal
+	 * @param client The {@link CurseForgeClient} associated with this file
+	 * @param data The raw API response data
+	 */
 	constructor(client: CurseForgeClient, data: CurseForgeGetModResponseRaw['data']) {
 		super(client);
 
@@ -88,14 +97,26 @@ export default class CurseForgeMod extends CurseForgeBase {
 		this.thumbsUpCount = data.thumbsUpCount;
 	}
 
+	/**
+	 * {@inheritDoc CurseForgeClient.getModDescription}
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	getDescription() {
 		return this.client.getModDescription(this.id);
 	}
 
+	/**
+	 * {@inheritDoc CurseForgeClient.getModFile}
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	getFile(fileId: number) {
 		return this.client.getModFile(this.id, fileId);
 	}
 
+	/**
+	 * {@inheritDoc CurseForgeClient.getModFiles}
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	getFiles(options?: CurseForgeGetModFilesOptions) {
 		return this.client.getModFiles(this.id, options);
 	}

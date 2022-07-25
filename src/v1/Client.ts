@@ -97,12 +97,20 @@ export interface CurseForgeFingerprintFuzzyMatch extends Omit<CurseForgeFingerpr
 	latestFiles: CurseForgeFile[],
 }
 
+/**
+ * The main class to interact with the CurseForge Core API.
+ */
 export default class CurseForgeClient {
 	#apiHost = 'https://api.curseforge.com';
 	#apiKey: string;
 	#fetch: (...args: any[]) => Promise<any>;
 	static #dateRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
 
+	/**
+	 * Constructs a new client to interact with the CurseForge Core API.
+	 * @param apiKey Your CurseForge Core API key. An API key can be generated in the CurseForge Core [developer console](https://console.curseforge.com/).
+	 * @param options Additional options to define how the client works
+	 */
 	constructor(apiKey: string, options?: CurseForgeClientOptions) {
 		if (typeof apiKey !== 'string') {
 			throw new TypeError(`CurseForgeClient constructor expects argument 1 to be string, received ${typeof apiKey}`);
@@ -124,6 +132,11 @@ export default class CurseForgeClient {
 		}
 	}
 
+	/**
+	 * Does an in place conversion of date string values into [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects.
+	 * @param object - The object to convert
+	 * @returns The object
+	 */
 	static #upgrade(object: any) {
 		if (object === null || typeof object !== 'object') {
 			return object;
@@ -142,6 +155,14 @@ export default class CurseForgeClient {
 		return object;
 	}
 
+	/**
+	 * Sends a request to the given API endpoint.
+	 * @internal
+	 * @param path - The endpoint, excluding the protocol and hostname
+	 * @param options - Any options to use in the request
+	 * @returns A JSON object containing the API response
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async fetchUrl(path: string, options: CurseForgeFetchOptions = {}) {
 		options.headers = {
 			...options.headers,
@@ -182,12 +203,24 @@ export default class CurseForgeClient {
 		}
 	}
 
+	/**
+	 * Creates an array of the given class.
+	 * @param CurseForgeType The class of objects to create
+	 * @param data The raw API response array data
+	 * @returns An array of `CurseForgeType` objects
+	 */
 	#getArrayResponse<T>(CurseForgeType: CurseForgeClass, data: Record<string, any>): T[] {
 		return data.map((rawResponse: any) => {
 			return new CurseForgeType(this, rawResponse);
 		});
 	}
 
+	/**
+	 * Creates a paginated response of the given class.
+	 * @param CurseForgeType The class of objects to create
+	 * @param data The raw paginated API response data
+	 * @returns The paginated object containing `CurseForgeType` objects
+	 */
 	#getPaginatedResponse<T>(CurseForgeType: CurseForgeClass, data: Record<string, any>): CurseForgePaginatedResponse<T> {
 		return {
 			pagination: data.pagination,
@@ -195,30 +228,61 @@ export default class CurseForgeClient {
 		};
 	}
 
+	/**
+	 * Get all games that are available to the provided API key.
+	 * @param options - The pagination query
+	 * @returns A list of games and the pagination information
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getGames(options?: CurseForgeGetGamesOptions) {
 		const data = await this.fetchUrl('/v1/games', {query: options as CurseForgeFetchQuery}) as CurseForgeGetGamesResponseRaw;
 
 		return this.#getPaginatedResponse<CurseForgeGame>(CurseForgeGame, data);
 	}
 
+	/**
+	 * Get a single game. A private game is only accessible by its respective API key.
+	 * @param gameId - A game unique id
+	 * @returns The game matching the gameId
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getGame(gameId: number) {
 		const data = await this.fetchUrl(`/v1/games/${gameId}`) as CurseForgeGetGameResponseRaw;
 
 		return new CurseForgeGame(this, data.data);
 	}
 
+	/**
+	 * Get all available versions for each known version type of the specified game. A private game is only accessible to its respective API key.
+	 * @param gameId - A game unique id
+	 * @returns A list of version types and versions
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getVersions(gameId: number) {
 		const data = await this.fetchUrl(`/v1/games/${gameId}/versions`) as CurseForgeGetVersionsResponseRaw;
 
 		return data.data;
 	}
 
+	/**
+	 * Get all available version types of the specified game. A private game is only accessible to its respective API key.
+	 * @param gameId - A game unique id
+	 * @returns A list of version types
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getVersionTypes(gameId: number) {
 		const {data} = await this.fetchUrl(`/v1/games/${gameId}/version-types`) as CurseForgeGetVersionTypesResponseRaw;
 
 		return data;
 	}
 
+	/**
+	 * Get all available classes and categories of the specified game. Specify a game id for a list of all game categories, or a class id for a list of categories under that class.
+	 * @param gameId A game unique id
+	 * @param options Additional filters
+	 * @returns A list of categories
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getCategories(gameId: number, options?: CurseForgeGetCategoriesOptions) {
 		const {data} = await this.fetchUrl('/v1/categories', {query: {
 			gameId,
@@ -228,6 +292,13 @@ export default class CurseForgeClient {
 		return data;
 	}
 
+	/**
+	 * Get all mods that match the search criteria.
+	 * @param gameId A game unique id
+	 * @param options Additional search criteria
+	 * @returns A list of mods
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async searchMods(gameId: number, options?: CurseForgeSearchModsOptions) {
 		const data = await this.fetchUrl('/v1/mods/search', {query: {
 			gameId,
@@ -237,12 +308,24 @@ export default class CurseForgeClient {
 		return this.#getPaginatedResponse<CurseForgeMod>(CurseForgeMod, data);
 	}
 
+	/**
+	 * Get a single mod.
+	 * @param modId The mod id
+	 * @returns The mod
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getMod(modId: number) {
 		const {data} = await this.fetchUrl(`/v1/mods/${modId}`) as CurseForgeGetModResponseRaw;
 
 		return new CurseForgeMod(this, data);
 	}
 
+	/**
+	 * Get a list of mods.
+	 * @param modIds An array of mod ids
+	 * @returns A list of mods
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getMods(modIds: number[]) {
 		const {data} = await this.fetchUrl('/v1/mods', {
 			body: JSON.stringify({modIds}),
@@ -251,6 +334,12 @@ export default class CurseForgeClient {
 		return this.#getArrayResponse<CurseForgeMod>(CurseForgeMod, data);
 	}
 
+	/**
+	 * Get a list of featured, popular and recently updated mods.
+	 * @param options Match results for a game and exclude specific mods
+	 * @returns A list of featured, popular and recently updated mods
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getFeaturedMods(options: CurseForgeGetFeaturedModsRequestBody): Promise<CurseForgeFeaturedMods> {
 		const {data: {featured, popular, recentlyUpdated}} = await this.fetchUrl('/v1/mods/featured', {
 			body: JSON.stringify(options),
@@ -263,24 +352,50 @@ export default class CurseForgeClient {
 		};
 	}
 
+	/**
+	 * Get the full description of a mod in HTML format.
+	 * @param modId The mod id
+	 * @returns The HTML description
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getModDescription(modId: number) {
 		const {data} = await this.fetchUrl(`/v1/mods/${modId}/description`) as CurseForgeStringResponseRaw;
 
 		return data;
 	}
 
+	/**
+	 * Get a single file of the specified mod.
+	 * @param modId The mod id the file belongs to
+	 * @param fileId The file id
+	 * @returns The mod file
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getModFile(modId: number, fileId: number) {
 		const {data} = await this.fetchUrl(`/v1/mods/${modId}/files/${fileId}`) as CurseForgeGetModFileResponseRaw;
 
 		return new CurseForgeFile(this, data);
 	}
 
+	/**
+	 * Get all files of the specified mod.
+	 * @param modId The mod id the files belong to
+	 * @param options Additional search criteria
+	 * @returns A list of mods
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getModFiles(modId: number, options?: CurseForgeGetModFilesOptions) {
 		const data = await this.fetchUrl(`/v1/mods/${modId}/files`, {query: options as CurseForgeFetchQuery}) as CurseForgeGetModFilesResponseRaw;
 
 		return this.#getPaginatedResponse<CurseForgeFile>(CurseForgeFile, data);
 	}
 
+	/**
+	 * Get a list of files.
+	 * @param fileIds A list of file ids to fetch
+	 * @returns A list of files
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getFiles(fileIds: number[]) {
 		const {data} = await this.fetchUrl('/v1/mods/files', {
 			body: JSON.stringify({fileIds}),
@@ -289,18 +404,38 @@ export default class CurseForgeClient {
 		return this.#getArrayResponse<CurseForgeFile>(CurseForgeFile, data);
 	}
 
+	/**
+	 * Get the changelog of a file in HTML format.
+	 * @param modId The mod id the file belongs to
+	 * @param fileId The file id
+	 * @returns The HTML changelog
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getModFileChangelog(modId: number, fileId: number) {
 		const {data} = await this.fetchUrl(`/v1/mods/${modId}/files/${fileId}/changelog`) as CurseForgeStringResponseRaw;
 
 		return data;
 	}
 
+	/**
+	 * Get a download URL for a specific file.
+	 * @param modId The mod id the file belongs to
+	 * @param fileId The file id
+	 * @returns The URL
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getModFileDownloadURL(modId: number, fileId: number) {
 		const {data} = await this.fetchUrl(`/v1/mods/${modId}/files/${fileId}/download-url`) as CurseForgeStringResponseRaw;
 
 		return data;
 	}
 
+	/**
+	 * 
+	 * @param fingerprints An array of fingerprints
+	 * @returns A list of mod files
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getFingerprintsMatches(fingerprints: number[]): Promise<CurseForgeFingerprintsMatches> {
 		const {data} = await this.fetchUrl('/v1/fingerprints', {
 			body: JSON.stringify({fingerprints}),
@@ -325,6 +460,12 @@ export default class CurseForgeClient {
 		};
 	}
 
+	/**
+	 * Get mod files that match a list of fingerprints using fuzzy matching.
+	 * @param options Game id and folder fingerprints options for the fuzzy matching
+	 * @returns A list of mod files
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getFingerprintsFuzzyMatches(options: CurseForgeGetFuzzyMatchesRequestBody): Promise<CurseForgeFingerprintFuzzyMatch[]> {
 		const {data} = await this.fetchUrl('/v1/fingerprints/fuzzy', {
 			body: JSON.stringify(options),
@@ -339,24 +480,46 @@ export default class CurseForgeClient {
 		});
 	}
 
+	/**
+	 * 
+	 * @param options Sort options
+	 * @returns A list of Minecraft game versions
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getMinecraftVersions(options?: CurseForgeGetMinecraftVersionsOptions) {
 		const {data} = await this.fetchUrl('/v1/minecraft/version', {query: options as CurseForgeFetchQuery}) as CurseForgeApiResponseOfListOfMinecraftGameVersion;
 
 		return data;
 	}
 
+	/**
+	 * 
+	 * @param gameVersionString 
+	 * @returns A Minecraft game version
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	async getSpecificMinecraftVersion(gameVersionString: string) {
 		const {data} = await this.fetchUrl(`/v1/minecraft/version/${gameVersionString}`) as CurseForgeApiResponseOfMinecraftGameVersion;
 
 		return data;
 	}
 
+	/**
+	 * 
+	 * @param options Filter options
+	 * @returns A list of Minecraft mod loaders
+	 */
 	async getMinecraftModLoaders(options?: CurseForgeGetMinecraftModLoadersOptions) {
 		const {data} = await this.fetchUrl('/v1/minecraft/modloader', {query: options as CurseForgeFetchQuery}) as CurseForgeApiResponseOfListOfMinecraftModLoaderIndex;
 
 		return data;
 	}
 
+	/**
+	 * 
+	 * @param modLoaderName 
+	 * @returns A Minecraft mod loader
+	 */
 	async getSpecificMinecraftModLoader(modLoaderName: string) {
 		const {data} = await this.fetchUrl(`/v1/minecraft/modloader/${modLoaderName}`) as CurseForgeApiResponseOfMinecraftModLoaderVersion;
 

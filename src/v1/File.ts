@@ -2,6 +2,9 @@ import CurseForgeBase from './Base.js';
 import CurseForgeClient from './Client.js';
 import {CurseForgeFileDependency, CurseForgeFileHash, CurseForgeFileModule, CurseForgeFileRaw, CurseForgeFileReleaseType, CurseForgeFileStatus, CurseForgeSortableGameVersion} from './Types.js';
 
+/**
+ * Represents a mod file.
+ */
 export default class CurseForgeFile extends CurseForgeBase {
 	/** The file id. */
 	id: number;
@@ -43,6 +46,12 @@ export default class CurseForgeFile extends CurseForgeBase {
 	fileFingerprint: number;
 	modules: CurseForgeFileModule[];
 
+	/**
+	 * Constructs a new file representation.
+	 * @internal
+	 * @param client The {@link CurseForgeClient} associated with this file
+	 * @param data The raw API response data
+	 */
 	constructor(client: CurseForgeClient, data: CurseForgeFileRaw) {
 		super(client);
 
@@ -71,10 +80,18 @@ export default class CurseForgeFile extends CurseForgeBase {
 		this.modules = data.modules;
 	}
 
+	/**
+	 * {@inheritDoc CurseForgeClient.getModFileChangelog}
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	getChangelog() {
 		return this.client.getModFileChangelog(this.modId, this.id);
 	}
 
+	/**
+	 * {@inheritDoc CurseForgeClient.getModFileDownloadURL}
+	 * @throws {@link CurseForgeResponseError} when the request fails
+	 */
 	getDownloadURL() {
 		return this.client.getModFileDownloadURL(this.modId, this.id);
 	}
