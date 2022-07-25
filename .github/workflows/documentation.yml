@@ -1,0 +1,72 @@
+name: generate documentation
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: build documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build documentation
+        run: npm run docs
+
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v3
+        with:
+          # Artifact name
+          name: typedocs
+          # A file, directory or wildcard pattern that describes what to upload
+          path: docs/*
+          # The desired behavior if no files are found using the provided path.
+          if-no-files-found: error
+
+  deploy:
+    name: deploy documentation
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+
+      - name: Clean directory
+        run: git rm -rf --ignore-unmatch .
+
+      - name: Download documentation artifact
+        uses: actions/download-artifact@v3
+        with:
+          # Artifact name
+          name: typedocs
+          # Destination path
+          path: ./
+
+      - name: Commit and push documentation
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "chore(docs): build documentation for $(git rev-parse --short "$GITHUB_SHA")"
+          git push
