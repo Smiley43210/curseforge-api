@@ -1,0 +1,45 @@
+{
+	"branches": [
+		"+([0-9])?(.{+([0-9]),x}).x",
+		"main",
+		"next",
+		"next-major",
+		{"name": "beta", "prerelease": true},
+		{"name": "alpha", "prerelease": true}
+	],
+	"plugins": [
+		[
+			"@semantic-release/exec",
+			{
+				"verifyConditionsCmd": "npm run build && node prepare-package.js"
+			}
+		],
+		"@semantic-release/commit-analyzer",
+		"@semantic-release/release-notes-generator",
+		"@semantic-release/changelog",
+		[
+			"@semantic-release/exec",
+			{
+				"prepareCmd": "node prepare-package.js ${nextRelease.version} && echo $PWD && npx sort-package-json ./dist/package.json && cat ./dist/package.json && npm pack ./dist"
+			}
+		],
+		[
+			"@semantic-release/npm",
+			{
+				"pkgRoot": "./dist"
+			}
+		],
+		[
+			"@semantic-release/github",
+			{
+				"assets": "./curseforge-api-*.tgz"
+			}
+		],
+		[
+			"@semantic-release/git",
+			{
+				"message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+			}
+		]
+	]
+}
