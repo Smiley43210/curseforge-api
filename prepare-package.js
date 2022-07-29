@@ -16,6 +16,7 @@ delete packageJson.devDependencies;
 delete packageJson.private;
 
 await Promise.all([
+	await cp('.gitignore', './dist/.gitignore'),
 	await new Promise((resolve, reject) => {
 		cp('CHANGELOG.md', './dist/CHANGELOG.md').then(resolve).catch((error) => {
 			if (error.code === 'ENOENT') {
