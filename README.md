@@ -81,6 +81,8 @@ console.log(jei.id); // => 238222
 
 Get the latest Forge 1.18.2 file for Just Enough Items (JEI):
 ```js
+import {CurseForgeModLoaderType} from 'curseforge-api';
+
 const files = await mod.getFiles(238222, {
 	gameVersion: '1.18.2',
 	modLoaderType: CurseForgeModLoaderType.Forge,
