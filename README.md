@@ -40,17 +40,20 @@ import {CurseForgeClient} from 'https://unpkg.com/curseforge-api@1.0/index.js'
 ```
 
 ## Usage
+Start by creating a [client](https://smiley43210.github.io/curseforge-api/classes/CurseForgeClient.html), which you will use to make most API queries:
+```js
 const client = new CurseForgeClient('YOUR_API_KEY');
 ```
 
-If `fetch()` is unavailable in your environment, you can provide a polyfill such as [node-fetch](https://www.npmjs.com/package/node-fetch):
+If you're using Node.js < v17.5.0, you'll want to provide a `fetch()` polyfill such as [node-fetch](https://www.npmjs.com/package/node-fetch):
 ```js
 import fetch from 'node-fetch';
-import CurseForgeClient from 'curseforge-api';
 
 // Pass fetch to the client
 const client = new CurseForgeClient('YOUR_API_KEY', {fetch});
 ```
+
+You can also provide a different polyfill, for example, if you're running this in a browser environment and target older browsers that don't support `fetch()`. As seen above, simply pass the polyfilled `fetch` function to the client constructor via the options.
 
 ## Examples
 Search for a mod via slug:
