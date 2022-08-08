@@ -1,3 +1,4 @@
+<!-- omit in toc -->
 # curseforge-api 🚀
 This is a JavaScript module built around the new [CurseForge Core API](https://docs.curseforge.com/#accessing-the-service) following the deprecation of the older, unnofficial API. It is designed to be easy to use and has zero dependencies 🙌. More information about the CurseForge Core API is [available here](https://docs.curseforge.com/).
 
@@ -5,16 +6,21 @@ This module provides TypeScript typings.
 
 This module uses `fetch()` under the hood to make requests. However, if used Node.js, keep in mind that `fetch()` was not added until `v17.5.0`, and is behind the `--experimental-fetch` flag until `v18.0.0`. For this reason, where `fetch()` is unavailable, the module can use a fetch polyfill such as [node-fetch](https://www.npmjs.com/package/node-fetch).
 
+<!-- omit in toc -->
 ## Table of Contents
 1. [Documentation](#documentation)
-1. [Installation](#installation)
+2. [Installation](#installation)
 	1. [Node.js](#nodejs)
-	1. [Deno and Browser](#deno-and-browser)
-1. [Usage](#usage)
+	2. [Deno and Browser](#deno-and-browser)
+3. [Usage](#usage)
 	1. [Using a `fetch()` Polyfill](#using-a-fetch-polyfill)
-	1. [Documentation](#documentation-1)
-	1. [Examples](#examples)
-1. [Enums](#enums)
+	2. [Documentation](#documentation-1)
+	3. [Examples](#examples)
+		1. [Search for a mod via slug](#search-for-a-mod-via-slug)
+		2. [Fetch a mod via project ID](#fetch-a-mod-via-project-id)
+		3. [Fetch the latest Forge 1.18.2 file for Just Enough Items (JEI)](#fetch-the-latest-forge-1182-file-for-just-enough-items-jei)
+		4. [Fetch a mod file and download URL](#fetch-a-mod-file-and-download-url)
+4. [Enums](#enums)
 
 ## Documentation
 Documentation is [available here](https://smiley43210.github.io/curseforge-api/) and is automatically generated from the source with [TypeDoc](https://typedoc.org/).
@@ -62,7 +68,7 @@ You can also provide a different polyfill, for example, if you're running this i
 All classes, functions, enums, and types are [documented here](https://smiley43210.github.io/curseforge-api/).
 
 ### Examples
-Search for a mod via slug:
+#### Search for a mod via slug
 ```js
 import {CurseForgeGameEnum} from 'curseforge-api';
 
@@ -72,14 +78,14 @@ console.log(jei.name); // => 'Just Enough Items (JEI)'
 console.log(jei.id); // => 238222
 ```
 
-Fetch a mod via project ID:
+#### Fetch a mod via project ID
 ```js
 const jei = await client.getMod(238222);
 console.log(jei.name); // => 'Just Enough Items (JEI)'
 console.log(jei.id); // => 238222
 ```
 
-Get the latest Forge 1.18.2 file for Just Enough Items (JEI):
+#### Fetch the latest Forge 1.18.2 file for Just Enough Items (JEI)
 ```js
 import {CurseForgeModLoaderType} from 'curseforge-api';
 
@@ -91,7 +97,7 @@ const files = await mod.getFiles(238222, {
 console.log(files.data[0].fileName); // => 'jei-1.18.2-9.7.1.232.jar'
 ```
 
-Fetch a mod's file and get the download URL:
+#### Fetch a mod file and download URL
 ```js
 const file = await mod.getFile(3847103);
 console.log(file.displayName); // => 'jei-1.18.2-9.7.0.209.jar'
