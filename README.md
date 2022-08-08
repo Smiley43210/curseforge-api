@@ -7,17 +7,39 @@ This module uses `fetch()` under the hood to make requests. However, if used Nod
 
 ## Table of Contents
 1. [Documentation](#documentation)
-1. [Getting Started](#getting-started)
+1. [Installation](#installation)
+	1. [Node.js](#nodejs)
+	1. [Deno and Browser](#deno-and-browser)
+1. [Usage](#usage)
 1. [Examples](#examples)
 1. [Enums](#enums)
 
 ## Documentation
 Documentation is [available here](https://smiley43210.github.io/curseforge-api/) and is automatically generated from the source with [TypeDoc](https://typedoc.org/).
 
-## Getting Started
-Import the package and create a [client](https://smiley43210.github.io/curseforge-api/classes/CurseForgeClient.html):
+## Installation
+Import the package depending on what type of environment you're using it in.
+
+### Node.js
+Install the package [via npm](https://www.npmjs.com/package/curseforge-api):
+```
+npm install curseforge-api
+```
+
+and import it in your script:
 ```js
 import {CurseForgeClient} from 'curseforge-api';
+```
+
+### Deno and Browser
+Import modules directly via CDN (for example, jsDelivr or unpkg):
+```js
+import {CurseForgeClient} from 'https://cdn.jsdelivr.net/npm/curseforge-api@1.0/index.js';
+// OR
+import {CurseForgeClient} from 'https://unpkg.com/curseforge-api@1.0/index.js'
+```
+
+## Usage
 const client = new CurseForgeClient('YOUR_API_KEY');
 ```
 
