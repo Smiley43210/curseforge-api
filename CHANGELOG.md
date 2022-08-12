@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/Smiley43210/curseforge-api/compare/v1.0.1...v1.0.2) (2022-08-12)
+
+
+### Bug Fixes
+
+* trigger release ([89f7aa9](https://github.com/Smiley43210/curseforge-api/commit/89f7aa9770f39ec8b4dacb6e91b98f97bb2599d2))
+
 ## [1.0.1](https://github.com/Smiley43210/curseforge-api/compare/v1.0.0...v1.0.1) (2022-07-25)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "curseforge-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "An easy to use library to help you consume the CurseForge Core API",
   "keywords": [
