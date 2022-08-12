@@ -10,21 +10,38 @@
 <div class="col-8 col-content">
 <div class="tsd-page-title">
 <h2>curseforge-api</h2></div>
-<div class="tsd-panel tsd-typography">
+<div class="tsd-panel tsd-typography"><!-- omit in toc -->
+
 <a href="#curseforge-api-🚀" id="curseforge-api-🚀" style="color: inherit; text-decoration: none;">
   <h1>curseforge-api 🚀</h1>
 </a>
 <p>This is a JavaScript module built around the new <a href="https://docs.curseforge.com/#accessing-the-service">CurseForge Core API</a> following the deprecation of the older, unnofficial API. It is designed to be easy to use and has zero dependencies 🙌. More information about the CurseForge Core API is <a href="https://docs.curseforge.com/">available here</a>.</p>
 <p>This module provides TypeScript typings.</p>
 <p>This module uses <code>fetch()</code> under the hood to make requests. However, if used Node.js, keep in mind that <code>fetch()</code> was not added until <code>v17.5.0</code>, and is behind the <code>--experimental-fetch</code> flag until <code>v18.0.0</code>. For this reason, where <code>fetch()</code> is unavailable, the module can use a fetch polyfill such as <a href="https://www.npmjs.com/package/node-fetch">node-fetch</a>.</p>
+<!-- omit in toc -->
 
 <a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
   <h2>Table of Contents</h2>
 </a>
 <ol>
 <li><a href="#documentation">Documentation</a></li>
-<li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#examples">Examples</a></li>
+<li><a href="#installation">Installation</a><ol>
+<li><a href="#nodejs">Node.js</a></li>
+<li><a href="#deno-and-browser">Deno and Browser</a></li>
+</ol>
+</li>
+<li><a href="#usage">Usage</a><ol>
+<li><a href="#using-a-fetch-polyfill">Using a <code>fetch()</code> Polyfill</a></li>
+<li><a href="#documentation-1">Documentation</a></li>
+<li><a href="#examples">Examples</a><ol>
+<li><a href="#search-for-a-mod-via-slug">Search for a mod via slug</a></li>
+<li><a href="#fetch-a-mod-via-project-id">Fetch a mod via project ID</a></li>
+<li><a href="#fetch-the-latest-forge-1182-file-for-just-enough-items-jei">Fetch the latest Forge 1.18.2 file for Just Enough Items (JEI)</a></li>
+<li><a href="#fetch-a-mod-file-and-download-url">Fetch a mod file and download URL</a></li>
+</ol>
+</li>
+</ol>
+</li>
 <li><a href="#enums">Enums</a></li>
 </ol>
 
@@ -33,30 +50,74 @@
 </a>
 <p>Documentation is <a href="https://smiley43210.github.io/curseforge-api/">available here</a> and is automatically generated from the source with <a href="https://typedoc.org/">TypeDoc</a>.</p>
 
-<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
-  <h2>Getting Started</h2>
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
 </a>
-<p>Import the package and create a <a href="https://smiley43210.github.io/curseforge-api/classes/CurseForgeClient.html">client</a>:</p>
-<pre><code class="language-js"><span class="hl-0">import</span><span class="hl-1"> {</span><span class="hl-2">CurseForgeClient</span><span class="hl-1">} </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;curseforge-api&#39;</span><span class="hl-1">;</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">client</span><span class="hl-1"> = </span><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-6">CurseForgeClient</span><span class="hl-1">(</span><span class="hl-3">&#39;YOUR_API_KEY&#39;</span><span class="hl-1">);</span>
+<p>Import the package depending on what type of environment you&#39;re using it in.</p>
+
+<a href="#nodejs" id="nodejs" style="color: inherit; text-decoration: none;">
+  <h3>Node.js</h3>
+</a>
+<p>Install the package <a href="https://www.npmjs.com/package/curseforge-api">via npm</a>:</p>
+<pre><code><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">install</span><span class="hl-1"> </span><span class="hl-0">curseforge</span><span class="hl-1">-</span><span class="hl-0">api</span>
 </code></pre>
-<p>If <code>fetch()</code> is unavailable in your environment, you can provide a polyfill such as <a href="https://www.npmjs.com/package/node-fetch">node-fetch</a>:</p>
-<pre><code class="language-js"><span class="hl-0">import</span><span class="hl-1"> </span><span class="hl-2">fetch</span><span class="hl-1"> </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;node-fetch&#39;</span><span class="hl-1">;</span><br/><span class="hl-0">import</span><span class="hl-1"> </span><span class="hl-2">CurseForgeClient</span><span class="hl-1"> </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;curseforge-api&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">// Pass fetch to the client</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">client</span><span class="hl-1"> = </span><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-6">CurseForgeClient</span><span class="hl-1">(</span><span class="hl-3">&#39;YOUR_API_KEY&#39;</span><span class="hl-1">, {</span><span class="hl-2">fetch</span><span class="hl-1">});</span>
+<p>and import it in your script:</p>
+<pre><code class="language-js"><span class="hl-2">import</span><span class="hl-1"> {</span><span class="hl-0">CurseForgeClient</span><span class="hl-1">} </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&#39;curseforge-api&#39;</span><span class="hl-1">;</span>
 </code></pre>
 
-<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
-  <h2>Examples</h2>
+<a href="#deno-and-browser" id="deno-and-browser" style="color: inherit; text-decoration: none;">
+  <h3>Deno and Browser</h3>
 </a>
-<p>Search for a mod via slug:</p>
-<pre><code class="language-js"><span class="hl-0">import</span><span class="hl-1"> {</span><span class="hl-2">CurseForgeGameEnum</span><span class="hl-1">} </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;curseforge-api&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">modsResults</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">client</span><span class="hl-1">.</span><span class="hl-6">searchMods</span><span class="hl-1">(</span><span class="hl-2">CurseForgeGameEnum</span><span class="hl-1">.</span><span class="hl-2">Minecraft</span><span class="hl-1">, {</span><span class="hl-2">slug:</span><span class="hl-1"> </span><span class="hl-3">&#39;jei&#39;</span><span class="hl-1">});</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">jei</span><span class="hl-1"> = </span><span class="hl-2">modsResults</span><span class="hl-1">.</span><span class="hl-2">data</span><span class="hl-1">[</span><span class="hl-8">0</span><span class="hl-1">];</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-2">jei</span><span class="hl-1">.</span><span class="hl-2">name</span><span class="hl-1">); </span><span class="hl-7">// =&gt; &#39;Just Enough Items (JEI)&#39;</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-2">jei</span><span class="hl-1">.</span><span class="hl-2">id</span><span class="hl-1">); </span><span class="hl-7">// =&gt; 238222</span>
+<p>Import modules directly via CDN (for example, jsDelivr or unpkg):</p>
+<pre><code class="language-js"><span class="hl-2">import</span><span class="hl-1"> {</span><span class="hl-0">CurseForgeClient</span><span class="hl-1">} </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&#39;https://cdn.jsdelivr.net/npm/curseforge-api@1.0/index.js&#39;</span><span class="hl-1">;</span><br/><span class="hl-4">// OR</span><br/><span class="hl-2">import</span><span class="hl-1"> {</span><span class="hl-0">CurseForgeClient</span><span class="hl-1">} </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&#39;https://unpkg.com/curseforge-api@1.0/index.js&#39;</span>
 </code></pre>
-<p>Fetch a mod via project ID:</p>
-<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">jei</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">client</span><span class="hl-1">.</span><span class="hl-6">getMod</span><span class="hl-1">(</span><span class="hl-8">238222</span><span class="hl-1">);</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-2">jei</span><span class="hl-1">.</span><span class="hl-2">name</span><span class="hl-1">); </span><span class="hl-7">// =&gt; &#39;Just Enough Items (JEI)&#39;</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-2">jei</span><span class="hl-1">.</span><span class="hl-2">id</span><span class="hl-1">); </span><span class="hl-7">// =&gt; 238222</span>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<p>Start by creating a <a href="https://smiley43210.github.io/curseforge-api/classes/CurseForgeClient.html">client</a>, which you will use to make most API queries:</p>
+<pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">client</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">CurseForgeClient</span><span class="hl-1">(</span><span class="hl-3">&#39;YOUR_API_KEY&#39;</span><span class="hl-1">);</span>
 </code></pre>
-<p>Get the latest Forge 1.18.2 file for Just Enough Items (JEI):</p>
-<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">files</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">mod</span><span class="hl-1">.</span><span class="hl-6">getFiles</span><span class="hl-1">(</span><span class="hl-8">238222</span><span class="hl-1">, {</span><br/><span class="hl-1">    </span><span class="hl-2">gameVersion:</span><span class="hl-1"> </span><span class="hl-3">&#39;1.18.2&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">modLoaderType:</span><span class="hl-1"> </span><span class="hl-2">CurseForgeModLoaderType</span><span class="hl-1">.</span><span class="hl-2">Forge</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">pageSize:</span><span class="hl-1"> </span><span class="hl-8">1</span><span class="hl-1">,</span><br/><span class="hl-1">});</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-2">files</span><span class="hl-1">.</span><span class="hl-2">data</span><span class="hl-1">[</span><span class="hl-8">0</span><span class="hl-1">].</span><span class="hl-2">fileName</span><span class="hl-1">); </span><span class="hl-7">// =&gt; &#39;jei-1.18.2-9.7.1.232.jar&#39;</span>
+
+<a href="#using-a-fetch-polyfill" id="using-a-fetch-polyfill" style="color: inherit; text-decoration: none;">
+  <h3>Using a <code>fetch()</code> Polyfill</h3>
+</a>
+<p>If you&#39;re using Node.js &lt; v17.5.0, you&#39;ll want to provide a <code>fetch()</code> polyfill such as <a href="https://www.npmjs.com/package/node-fetch">node-fetch</a>:</p>
+<pre><code class="language-js"><span class="hl-2">import</span><span class="hl-1"> </span><span class="hl-0">fetch</span><span class="hl-1"> </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&#39;node-fetch&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">// Pass fetch to the client</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">client</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">CurseForgeClient</span><span class="hl-1">(</span><span class="hl-3">&#39;YOUR_API_KEY&#39;</span><span class="hl-1">, {</span><span class="hl-0">fetch</span><span class="hl-1">});</span>
 </code></pre>
-<p>Fetch a mod&#39;s file and get the download URL:</p>
-<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">file</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">mod</span><span class="hl-1">.</span><span class="hl-6">getFile</span><span class="hl-1">(</span><span class="hl-8">3847103</span><span class="hl-1">);</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-2">file</span><span class="hl-1">.</span><span class="hl-2">displayName</span><span class="hl-1">); </span><span class="hl-7">// =&gt; &#39;jei-1.18.2-9.7.0.209.jar&#39;</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">file</span><span class="hl-1">.</span><span class="hl-6">getDownloadURL</span><span class="hl-1">()); </span><span class="hl-7">// =&gt; &#39;https://edge.forgecdn.net/files/3847/103/jei-1.18.2-9.7.0.209.jar&#39;</span>
+<p>You can also provide a different polyfill, for example, if you&#39;re running this in a browser environment and target older browsers that don&#39;t support <code>fetch()</code>. As seen above, simply pass the polyfilled <code>fetch</code> function to the client constructor via the options.</p>
+
+<a href="#documentation-1" id="documentation-1" style="color: inherit; text-decoration: none;">
+  <h3>Documentation</h3>
+</a>
+<p>All classes, functions, enums, and types are <a href="https://smiley43210.github.io/curseforge-api/">documented here</a>.</p>
+
+<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+  <h3>Examples</h3>
+</a>
+
+<a href="#search-for-a-mod-via-slug" id="search-for-a-mod-via-slug" style="color: inherit; text-decoration: none;">
+  <h4>Search for a mod via slug</h4>
+</a>
+<pre><code class="language-js"><span class="hl-2">import</span><span class="hl-1"> {</span><span class="hl-0">CurseForgeGameEnum</span><span class="hl-1">} </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&#39;curseforge-api&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">modsResults</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">client</span><span class="hl-1">.</span><span class="hl-7">searchMods</span><span class="hl-1">(</span><span class="hl-0">CurseForgeGameEnum</span><span class="hl-1">.</span><span class="hl-0">Minecraft</span><span class="hl-1">, {</span><span class="hl-0">slug:</span><span class="hl-1"> </span><span class="hl-3">&#39;jei&#39;</span><span class="hl-1">});</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">jei</span><span class="hl-1"> = </span><span class="hl-0">modsResults</span><span class="hl-1">.</span><span class="hl-0">data</span><span class="hl-1">[</span><span class="hl-8">0</span><span class="hl-1">];</span><br/><span class="hl-0">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-0">jei</span><span class="hl-1">.</span><span class="hl-0">name</span><span class="hl-1">); </span><span class="hl-4">// =&gt; &#39;Just Enough Items (JEI)&#39;</span><br/><span class="hl-0">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-0">jei</span><span class="hl-1">.</span><span class="hl-0">id</span><span class="hl-1">); </span><span class="hl-4">// =&gt; 238222</span>
+</code></pre>
+
+<a href="#fetch-a-mod-via-project-id" id="fetch-a-mod-via-project-id" style="color: inherit; text-decoration: none;">
+  <h4>Fetch a mod via project ID</h4>
+</a>
+<pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">jei</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">client</span><span class="hl-1">.</span><span class="hl-7">getMod</span><span class="hl-1">(</span><span class="hl-8">238222</span><span class="hl-1">);</span><br/><span class="hl-0">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-0">jei</span><span class="hl-1">.</span><span class="hl-0">name</span><span class="hl-1">); </span><span class="hl-4">// =&gt; &#39;Just Enough Items (JEI)&#39;</span><br/><span class="hl-0">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-0">jei</span><span class="hl-1">.</span><span class="hl-0">id</span><span class="hl-1">); </span><span class="hl-4">// =&gt; 238222</span>
+</code></pre>
+
+<a href="#fetch-the-latest-forge-1182-file-for-just-enough-items-jei" id="fetch-the-latest-forge-1182-file-for-just-enough-items-jei" style="color: inherit; text-decoration: none;">
+  <h4>Fetch the latest Forge 1.18.2 file for Just Enough Items (JEI)</h4>
+</a>
+<pre><code class="language-js"><span class="hl-2">import</span><span class="hl-1"> {</span><span class="hl-0">CurseForgeModLoaderType</span><span class="hl-1">} </span><span class="hl-2">from</span><span class="hl-1"> </span><span class="hl-3">&#39;curseforge-api&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">files</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">mod</span><span class="hl-1">.</span><span class="hl-7">getFiles</span><span class="hl-1">(</span><span class="hl-8">238222</span><span class="hl-1">, {</span><br/><span class="hl-1">    </span><span class="hl-0">gameVersion:</span><span class="hl-1"> </span><span class="hl-3">&#39;1.18.2&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-0">modLoaderType:</span><span class="hl-1"> </span><span class="hl-0">CurseForgeModLoaderType</span><span class="hl-1">.</span><span class="hl-0">Forge</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-0">pageSize:</span><span class="hl-1"> </span><span class="hl-8">1</span><span class="hl-1">,</span><br/><span class="hl-1">});</span><br/><span class="hl-0">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-0">files</span><span class="hl-1">.</span><span class="hl-0">data</span><span class="hl-1">[</span><span class="hl-8">0</span><span class="hl-1">].</span><span class="hl-0">fileName</span><span class="hl-1">); </span><span class="hl-4">// =&gt; &#39;jei-1.18.2-9.7.1.232.jar&#39;</span>
+</code></pre>
+
+<a href="#fetch-a-mod-file-and-download-url" id="fetch-a-mod-file-and-download-url" style="color: inherit; text-decoration: none;">
+  <h4>Fetch a mod file and download URL</h4>
+</a>
+<pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">file</span><span class="hl-1"> = </span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">mod</span><span class="hl-1">.</span><span class="hl-7">getFile</span><span class="hl-1">(</span><span class="hl-8">3847103</span><span class="hl-1">);</span><br/><span class="hl-0">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-0">file</span><span class="hl-1">.</span><span class="hl-0">displayName</span><span class="hl-1">); </span><span class="hl-4">// =&gt; &#39;jei-1.18.2-9.7.0.209.jar&#39;</span><br/><span class="hl-0">console</span><span class="hl-1">.</span><span class="hl-7">log</span><span class="hl-1">(</span><span class="hl-2">await</span><span class="hl-1"> </span><span class="hl-0">file</span><span class="hl-1">.</span><span class="hl-7">getDownloadURL</span><span class="hl-1">()); </span><span class="hl-4">// =&gt; &#39;https://edge.forgecdn.net/files/3847/103/jei-1.18.2-9.7.0.209.jar&#39;</span>
 </code></pre>
 
 <a href="#enums" id="enums" style="color: inherit; text-decoration: none;">
