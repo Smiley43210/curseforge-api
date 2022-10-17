@@ -1,7 +1,7 @@
 /**
  * Game ids available through `getGames()` at the time of publishing.
  */
-enum CurseForgeGameEnum {
+enum GameEnum {
 	WorldofWarcraft = 1,
 	TheSecretWorld = 64,
 	StarCraftII = 65,
@@ -24,4 +24,4 @@ enum CurseForgeGameEnum {
 	Demeo = 78135,
 }
 
-export default CurseForgeGameEnum;
+export default GameEnum;

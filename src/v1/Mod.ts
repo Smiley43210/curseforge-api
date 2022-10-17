@@ -1,13 +1,13 @@
-import CurseForgeBase from './Base.js';
-import CurseForgeClient from './Client.js';
-import CurseForgeFile from './File.js';
-import {CurseForgeGetModFilesOptions} from './Options.js';
-import {CurseForgeCategory, CurseForgeFileIndex, CurseForgeGetModResponseRaw, CurseForgeModAsset, CurseForgeModAuthor, CurseForgeModLinks, CurseForgeModStatus} from './Types.js';
+import Base from './Base.js';
+import Client from './Client.js';
+import File from './File.js';
+import {GetModFilesOptions} from './Options.js';
+import {Category, FileIndex, GetModResponseRaw, ModAsset, ModAuthor, ModLinks, ModStatus} from './Types.js';
 
 /**
  * Represents a mod.
  */
-export default class CurseForgeMod extends CurseForgeBase {
+export default class Mod extends Base {
 	/** The mod id. */
 	id: number;
 	/** The game id this mod is for. */
@@ -17,11 +17,11 @@ export default class CurseForgeMod extends CurseForgeBase {
 	/** The mod slug that would appear in the URL. */
 	slug: string;
 	/** Relevant links for the mod such as Issue tracker and Wiki. */
-	links: CurseForgeModLinks;
+	links: ModLinks;
 	/** Mod summary. */
 	summary: string;
 	/** Current mod status. */
-	status: CurseForgeModStatus;
+	status: ModStatus;
 	/** Number of downloads for the mod. */
 	downloadCount: number;
 	/** Whether the mod is included in the featured mods list. */
@@ -29,21 +29,21 @@ export default class CurseForgeMod extends CurseForgeBase {
 	/** The main category of the mod as it was chosen by the mod author. */
 	primaryCategoryId: number;
 	/** List of categories that this mod is related to. */
-	categories: CurseForgeCategory[];
+	categories: Category[];
 	/** The class id this mod belongs to. */
 	classId?: number;
 	/** List of the mod's authors. */
-	authors: CurseForgeModAuthor[];
+	authors: ModAuthor[];
 	/** The mod's logo asset. */
-	logo: CurseForgeModAsset;
+	logo: ModAsset;
 	/** List of screenshots assets. */
-	screenshots: CurseForgeModAsset[];
+	screenshots: ModAsset[];
 	/** The id of the main file of the mod. */
 	mainFileId: number;
 	/** List of latest files of the mod. */
-	latestFiles: CurseForgeFile[];
+	latestFiles: File[];
 	/** List of file related details for the latest files of the mod. */
-	latestFilesIndexes: CurseForgeFileIndex[];
+	latestFilesIndexes: FileIndex[];
 	/** The creation date of the mod. */
 	dateCreated: Date;
 	/** The last time the mod was modified. */
@@ -62,10 +62,10 @@ export default class CurseForgeMod extends CurseForgeBase {
 	/**
 	 * Constructs a new mod representation.
 	 * @internal
-	 * @param client The {@link CurseForgeClient} associated with this file
+	 * @param client The {@link Client} associated with this file
 	 * @param data The raw API response data
 	 */
-	constructor(client: CurseForgeClient, data: CurseForgeGetModResponseRaw['data']) {
+	constructor(client: Client, data: GetModResponseRaw['data']) {
 		super(client);
 
 		this.id = data.id;
@@ -85,7 +85,7 @@ export default class CurseForgeMod extends CurseForgeBase {
 		this.screenshots = data.screenshots;
 		this.mainFileId = data.mainFileId;
 		this.latestFiles = data.latestFiles.map((rawFile) => {
-			return new CurseForgeFile(client, rawFile);
+			return new File(client, rawFile);
 		});
 		this.latestFilesIndexes = data.latestFilesIndexes;
 		this.dateCreated = data.dateCreated;
@@ -98,26 +98,26 @@ export default class CurseForgeMod extends CurseForgeBase {
 	}
 
 	/**
-	 * {@inheritDoc CurseForgeClient.getModDescription}
-	 * @throws {@link CurseForgeResponseError} when the request fails
+	 * {@inheritDoc Client.getModDescription}
+	 * @throws {@link ResponseError} when the request fails
 	 */
 	getDescription() {
 		return this.client.getModDescription(this.id);
 	}
 
 	/**
-	 * {@inheritDoc CurseForgeClient.getModFile}
-	 * @throws {@link CurseForgeResponseError} when the request fails
+	 * {@inheritDoc Client.getModFile}
+	 * @throws {@link ResponseError} when the request fails
 	 */
 	getFile(fileId: number) {
 		return this.client.getModFile(this.id, fileId);
 	}
 
 	/**
-	 * {@inheritDoc CurseForgeClient.getModFiles}
-	 * @throws {@link CurseForgeResponseError} when the request fails
+	 * {@inheritDoc Client.getModFiles}
+	 * @throws {@link ResponseError} when the request fails
 	 */
-	getFiles(options?: CurseForgeGetModFilesOptions) {
+	getFiles(options?: GetModFilesOptions) {
 		return this.client.getModFiles(this.id, options);
 	}
 }

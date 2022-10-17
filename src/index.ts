@@ -1,6 +1,6 @@
-export {default as CurseForgeClient, CurseForgeResponseError} from './v1/Client.js';
-export {default as CurseForgeFile} from './v1/File.js';
-export {default as CurseForgeGame} from './v1/Game.js';
-export {default as CurseForgeGameEnum} from './v1/GameEnum.js';
-export {default as CurseForgeMod} from './v1/Mod.js';
-export {CurseForgeCoreApiStatus, CurseForgeCoreStatus, CurseForgeFileRelationType, CurseForgeFileReleaseType, CurseForgeFileStatus, CurseForgeGameVersionStatus, CurseForgeGameVersionTypeStatus, CurseForgeHashAlgo, CurseForgeModLoaderInstallMethod, CurseForgeModLoaderType, CurseForgeModStatus, CurseForgeModsSearchSortField, CurseForgeSortOrder} from './v1/Types.js';
+export {default as Client, ResponseError} from './v1/Client.js';
+export {default as File} from './v1/File.js';
+export {default as Game} from './v1/Game.js';
+export {default as GameEnum} from './v1/GameEnum.js';
+export {default as Mod} from './v1/Mod.js';
+export {CoreApiStatus, CoreStatus, FileRelationType, FileReleaseType, FileStatus, GameVersionStatus, GameVersionTypeStatus, HashAlgo, ModLoaderInstallMethod, ModLoaderType, ModStatus, ModsSearchSortField, SortOrder} from './v1/Types.js';

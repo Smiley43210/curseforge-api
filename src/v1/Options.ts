@@ -1,21 +1,23 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 
-import {CurseForgeModLoaderType, CurseForgeModsSearchSortField, CurseForgeSortOrder} from './Types.js';
+import {ModLoaderType, ModsSearchSortField, SortOrder} from './Types.js';
 
-export interface CurseForgeGetGamesOptions {
+export interface GetGamesOptions {
 	/** A zero based index of the first item to include in the response,. */
 	index?: number,
 	/** The number of items to include in the response,. */
 	pageSize?: number,
 }
 
-export interface CurseForgeGetCategoriesOptions {
+export interface GetCategoriesOptions {
 	/** A class unique id. */
 	classId?: number,
+	/** A flag used with gameId to return only classes. */
+	classesOnly?: boolean,
 }
 
-export interface CurseForgeSearchModsOptions {
+export interface SearchModsOptions {
 	/** Filter by section id (discoverable via Categories). */
 	classId?: number,
 	/** Filter by category id. */
@@ -25,11 +27,11 @@ export interface CurseForgeSearchModsOptions {
 	/** Filter by free text search in the mod name and author. */
 	searchFilter?: string,
 	/** Filter by ModsSearchSortField enumeration. */
-	sortField?: CurseForgeModsSearchSortField,
+	sortField?: ModsSearchSortField,
 	/** 'asc' if sort is in ascending order, 'desc' if sort is in descending order. */
-	sortOrder?: CurseForgeSortOrder,
+	sortOrder?: SortOrder,
 	/** Filter only mods associated to a given modloader (Forge, Fabric ...). Must be coupled with gameVersion. */
-	modLoaderType?: CurseForgeModLoaderType,
+	modLoaderType?: ModLoaderType,
 	/** Filter only mods that contain files tagged with versions of the given gameVersionTypeId. */
 	gameVersionTypeId?: number,
 	/** Filter by slug (coupled with classId will result in a unique result). */
@@ -40,18 +42,18 @@ export interface CurseForgeSearchModsOptions {
 	pageSize?: number,
 }
 
-export interface CurseForgeGetModFileOptions {
+export interface GetModFileOptions {
 	/** The mod id the file belongs to. */
 	modId: number,
 	/** The file id. */
 	fileId: number,
 }
 
-export interface CurseForgeGetModFilesOptions {
+export interface GetModFilesOptions {
 	/** Filter by game version string. */
 	gameVersion?: string,
 	/** ModLoaderType enumeration. */
-	modLoaderType?: CurseForgeModLoaderType,
+	modLoaderType?: ModLoaderType,
 	/** Filter only files that are tagged with versions of the given gameVersionTypeId. */
 	gameVersionTypeId?: number,
 	/** A zero based index of the first item to include in the response,. */
@@ -60,25 +62,25 @@ export interface CurseForgeGetModFilesOptions {
 	pageSize?: number,
 }
 
-export interface CurseForgeGetModFileChangelogOptions {
+export interface GetModFileChangelogOptions {
 	/** The mod id the file belongs to. */
 	modId: number,
 	/** The file id. */
 	fileId: number,
 }
 
-export interface CurseForgeGetModFileDownloadURLOptions {
+export interface GetModFileDownloadURLOptions {
 	/** The mod id the file belongs to. */
 	modId: number,
 	/** The file id. */
 	fileId: number,
 }
 
-export interface CurseForgeGetMinecraftVersionsOptions {
+export interface GetMinecraftVersionsOptions {
 	sortDescending?: boolean,
 }
 
-export interface CurseForgeGetMinecraftModLoadersOptions {
+export interface GetMinecraftModLoadersOptions {
 	version?: string,
 	includeAll?: boolean,
 }

@@ -1,11 +1,11 @@
-import CurseForgeBase from './Base.js';
-import CurseForgeClient from './Client.js';
-import {CurseForgeFileDependency, CurseForgeFileHash, CurseForgeFileModule, CurseForgeFileRaw, CurseForgeFileReleaseType, CurseForgeFileStatus, CurseForgeSortableGameVersion} from './Types.js';
+import Base from './Base.js';
+import Client from './Client.js';
+import {FileDependency, FileHash, FileModule, FileRaw, FileReleaseType, FileStatus, SortableGameVersion} from './Types.js';
 
 /**
  * Represents a mod file.
  */
-export default class CurseForgeFile extends CurseForgeBase {
+export default class File extends Base {
 	/** The file id. */
 	id: number;
 	/** The game id related to the mod that this file belongs to. */
@@ -19,11 +19,11 @@ export default class CurseForgeFile extends CurseForgeBase {
 	/** Exact file name. */
 	fileName: string;
 	/** The file release type. */
-	releaseType: CurseForgeFileReleaseType;
+	releaseType: FileReleaseType;
 	/** Status of the file. */
-	fileStatus: CurseForgeFileStatus;
+	fileStatus: FileStatus;
 	/** The file hash (i.e. md5 or sha1). */
-	hashes: CurseForgeFileHash[];
+	hashes: FileHash[];
 	/** The file timestamp. */
 	fileDate: Date;
 	/** The file length in bytes. */
@@ -35,24 +35,24 @@ export default class CurseForgeFile extends CurseForgeBase {
 	/** List of game versions this file is relevant for. */
 	gameVersions: string[];
 	/** Metadata used for sorting by game versions. */
-	sortableGameVersions: CurseForgeSortableGameVersion[];
+	sortableGameVersions: SortableGameVersion[];
 	/** List of dependencies files. */
-	dependencies: CurseForgeFileDependency[];
+	dependencies: FileDependency[];
 	exposeAsAlternative?: boolean;
 	parentProjectFileId?: number;
 	alternateFileId?: number;
 	isServerPack?: boolean;
 	serverPackFileId?: number;
 	fileFingerprint: number;
-	modules: CurseForgeFileModule[];
+	modules: FileModule[];
 
 	/**
 	 * Constructs a new file representation.
 	 * @internal
-	 * @param client The {@link CurseForgeClient} associated with this file
+	 * @param client The {@link Client} associated with this file
 	 * @param data The raw API response data
 	 */
-	constructor(client: CurseForgeClient, data: CurseForgeFileRaw) {
+	constructor(client: Client, data: FileRaw) {
 		super(client);
 
 		this.id = data.id;
@@ -81,16 +81,16 @@ export default class CurseForgeFile extends CurseForgeBase {
 	}
 
 	/**
-	 * {@inheritDoc CurseForgeClient.getModFileChangelog}
-	 * @throws {@link CurseForgeResponseError} when the request fails
+	 * {@inheritDoc Client.getModFileChangelog}
+	 * @throws {@link ResponseError} when the request fails
 	 */
 	getChangelog() {
 		return this.client.getModFileChangelog(this.modId, this.id);
 	}
 
 	/**
-	 * {@inheritDoc CurseForgeClient.getModFileDownloadURL}
-	 * @throws {@link CurseForgeResponseError} when the request fails
+	 * {@inheritDoc Client.getModFileDownloadURL}
+	 * @throws {@link ResponseError} when the request fails
 	 */
 	getDownloadURL() {
 		return this.client.getModFileDownloadURL(this.modId, this.id);

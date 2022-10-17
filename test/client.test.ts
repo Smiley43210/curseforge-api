@@ -1,30 +1,30 @@
 import {jest} from '@jest/globals';
-import {CurseForgeClient, CurseForgeFile, CurseForgeGame, CurseForgeMod, CurseForgeGameEnum as Game} from '../dist/index.js';
+import {Client, File, Game, GameEnum, Mod} from '../dist/index.js';
 
 jest.setTimeout(30000);
-let client: CurseForgeClient;
+let client: Client;
 
 beforeAll(() => {
 	// @ts-ignore
-	client = new CurseForgeClient(process.env.JEST_CURSEFORGE_API);
+	client = new Client(process.env.JEST_CURSEFORGE_API);
 });
 
-test('CurseForgeClient constructor throws without api key', () => {
+test('Client constructor throws without api key', () => {
 	expect(() => {
 		// @ts-ignore
-		const badClient = new CurseForgeClient();
+		const badClient = new Client();
 	}).toThrow();
 });
 
-describe('CurseForgeGame has properties', () => {
+describe('Game has properties', () => {
 	let game;
 
 	beforeAll(async () => {
-		game = await client.getGame(Game.Minecraft);
+		game = await client.getGame(GameEnum.Minecraft);
 	});
 
-	test('game is CurseForgeGame', async () => {
-		expect(game).toBeInstanceOf(CurseForgeGame);
+	test('game is Game', async () => {
+		expect(game).toBeInstanceOf(Game);
 	});
 	test('game id is number', async () => {
 		expect(typeof game.id).toBe('number');
@@ -59,13 +59,13 @@ describe('getGames finds games', () => {
 });
 
 test('getGame finds Minecraft', async () => {
-	const game = await client.getGame(Game.Minecraft);
+	const game = await client.getGame(GameEnum.Minecraft);
 
 	expect(game.name).toBe('Minecraft');
 });
 
 test('getVersions finds versions', async () => {
-	const versionTypes = await client.getVersions(Game.Minecraft);
+	const versionTypes = await client.getVersions(GameEnum.Minecraft);
 
 	expect(typeof versionTypes).toBe('object');
 	expect(versionTypes.length).toBeGreaterThanOrEqual(10);
@@ -76,7 +76,7 @@ test('getVersions finds versions', async () => {
 });
 
 test('getVersionTypes finds versions', async () => {
-	const types = await client.getVersionTypes(Game.Minecraft);
+	const types = await client.getVersionTypes(GameEnum.Minecraft);
 
 	expect(typeof types).toBe('object');
 	expect(types.length).toBeGreaterThanOrEqual(1);
@@ -85,7 +85,7 @@ test('getVersionTypes finds versions', async () => {
 });
 
 test('getCategories finds categories', async () => {
-	const categories = await client.getCategories(Game.Minecraft);
+	const categories = await client.getCategories(GameEnum.Minecraft);
 
 	expect(typeof categories).toBe('object');
 	expect(categories.length).toBeGreaterThanOrEqual(10);
@@ -93,15 +93,15 @@ test('getCategories finds categories', async () => {
 	expect(typeof categories[0].name).toBe('string');
 });
 
-describe('CurseForgeMod has properties', () => {
+describe('Mod has properties', () => {
 	let mod;
 
 	beforeAll(async () => {
 		mod = await client.getMod(238222);
 	});
 
-	test('mod is CurseForgeMod', async () => {
-		expect(mod).toBeInstanceOf(CurseForgeMod);
+	test('mod is Mod', async () => {
+		expect(mod).toBeInstanceOf(Mod);
 	});
 	test('mod id is number', async () => {
 		expect(typeof mod.id).toBe('number');
@@ -115,7 +115,7 @@ describe('CurseForgeMod has properties', () => {
 });
 
 test('searchMods finds jei', async () => {
-	const mods = await client.searchMods(Game.Minecraft, {slug: 'jei'});
+	const mods = await client.searchMods(GameEnum.Minecraft, {slug: 'jei'});
 
 	expect(mods.data[0].name).toBe('Just Enough Items (JEI)');
 });
@@ -134,7 +134,7 @@ test('getMods finds jei', async () => {
 
 test('getFeaturedMods finds mods', async () => {
 	const mods = await client.getFeaturedMods({
-		gameId: Game.Minecraft,
+		gameId: GameEnum.Minecraft,
 		excludedModIds: [],
 	});
 
@@ -149,15 +149,15 @@ test('getModDescription finds text', async () => {
 	expect(typeof description).toBe('string');
 });
 
-describe('CurseForgeFile has properties', () => {
+describe('File has properties', () => {
 	let file;
 
 	beforeAll(async () => {
 		file = await client.getModFile(238222, 3847103);
 	});
 
-	test('mod is CurseForgeFile', async () => {
-		expect(file).toBeInstanceOf(CurseForgeFile);
+	test('mod is File', async () => {
+		expect(file).toBeInstanceOf(File);
 	});
 	test('mod id is number', async () => {
 		expect(typeof file.id).toBe('number');
@@ -212,7 +212,7 @@ test('getFingerprintsMatches finds files', async () => {
 
 test('getFingerprintsFuzzyMatches returns array', async () => {
 	const matchesResult = await client.getFingerprintsFuzzyMatches({
-		gameId: Game.Minecraft,
+		gameId: GameEnum.Minecraft,
 		fingerprints: [
 			{
 				foldername: 'META-INF',

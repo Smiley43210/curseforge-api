@@ -1,27 +1,27 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 
-export interface CurseForgeApiResponseOfListOfMinecraftGameVersion {
+export interface ApiResponseOfListOfMinecraftGameVersion {
 	/** The response data. */
-	data: CurseForgeMinecraftGameVersion[],
+	data: MinecraftGameVersion[],
 }
 
-export interface CurseForgeApiResponseOfListOfMinecraftModLoaderIndex {
+export interface ApiResponseOfListOfMinecraftModLoaderIndex {
 	/** The response data. */
-	data: CurseForgeMinecraftModLoaderIndex[],
+	data: MinecraftModLoaderIndex[],
 }
 
-export interface CurseForgeApiResponseOfMinecraftGameVersion {
+export interface ApiResponseOfMinecraftGameVersion {
 	/** The response data. */
-	data: CurseForgeMinecraftGameVersion,
+	data: MinecraftGameVersion,
 }
 
-export interface CurseForgeApiResponseOfMinecraftModLoaderVersion {
+export interface ApiResponseOfMinecraftModLoaderVersion {
 	/** The response data. */
-	data: CurseForgeMinecraftModLoaderVersion,
+	data: MinecraftModLoaderVersion,
 }
 
-export interface CurseForgeCategory {
+export interface Category {
 	/** The category id. */
 	id: number,
 	/** The game id related to the category. */
@@ -46,12 +46,12 @@ export interface CurseForgeCategory {
 	displayIndex?: number,
 }
 
-export enum CurseForgeCoreApiStatus {
+export enum CoreApiStatus {
 	Private = 1,
 	Public = 2,
 }
 
-export enum CurseForgeCoreStatus {
+export enum CoreStatus {
 	Draft = 1,
 	Test = 2,
 	PendingReview = 3,
@@ -60,13 +60,13 @@ export enum CurseForgeCoreStatus {
 	Live = 6,
 }
 
-export interface CurseForgeFeaturedModsResponse {
-	featured: CurseForgeModRaw[],
-	popular: CurseForgeModRaw[],
-	recentlyUpdated: CurseForgeModRaw[],
+export interface FeaturedModsResponse {
+	featured: ModRaw[],
+	popular: ModRaw[],
+	recentlyUpdated: ModRaw[],
 }
 
-export interface CurseForgeFileRaw {
+export interface FileRaw {
 	/** The file id. */
 	id: number,
 	/** The game id related to the mod that this file belongs to. */
@@ -80,11 +80,11 @@ export interface CurseForgeFileRaw {
 	/** Exact file name. */
 	fileName: string,
 	/** The file release type. */
-	releaseType: CurseForgeFileReleaseType,
+	releaseType: FileReleaseType,
 	/** Status of the file. */
-	fileStatus: CurseForgeFileStatus,
+	fileStatus: FileStatus,
 	/** The file hash (i.e. md5 or sha1). */
-	hashes: CurseForgeFileHash[],
+	hashes: FileHash[],
 	/** The file timestamp. */
 	fileDate: Date,
 	/** The file length in bytes. */
@@ -96,43 +96,43 @@ export interface CurseForgeFileRaw {
 	/** List of game versions this file is relevant for. */
 	gameVersions: string[],
 	/** Metadata used for sorting by game versions. */
-	sortableGameVersions: CurseForgeSortableGameVersion[],
+	sortableGameVersions: SortableGameVersion[],
 	/** List of dependencies files. */
-	dependencies: CurseForgeFileDependency[],
+	dependencies: FileDependency[],
 	exposeAsAlternative?: boolean,
 	parentProjectFileId?: number,
 	alternateFileId?: number,
 	isServerPack?: boolean,
 	serverPackFileId?: number,
 	fileFingerprint: number,
-	modules: CurseForgeFileModule[],
+	modules: FileModule[],
 }
 
-export interface CurseForgeFileDependency {
+export interface FileDependency {
 	modId: number,
-	relationType: CurseForgeFileRelationType,
+	relationType: FileRelationType,
 }
 
-export interface CurseForgeFileHash {
+export interface FileHash {
 	value: string,
-	algo: CurseForgeHashAlgo,
+	algo: HashAlgo,
 }
 
-export interface CurseForgeFileIndex {
+export interface FileIndex {
 	gameVersion: string,
 	fileId: number,
 	filename: string,
-	releaseType: CurseForgeFileReleaseType,
+	releaseType: FileReleaseType,
 	gameVersionTypeId?: number,
-	modLoader: CurseForgeModLoaderType,
+	modLoader: ModLoaderType,
 }
 
-export interface CurseForgeFileModule {
+export interface FileModule {
 	name: string,
 	fingerprint: number,
 }
 
-export enum CurseForgeFileRelationType {
+export enum FileRelationType {
 	EmbeddedLibrary = 1,
 	OptionalDependency = 2,
 	RequiredDependency = 3,
@@ -141,13 +141,13 @@ export enum CurseForgeFileRelationType {
 	Include = 6,
 }
 
-export enum CurseForgeFileReleaseType {
+export enum FileReleaseType {
 	Release = 1,
 	Beta = 2,
 	Alpha = 3,
 }
 
-export enum CurseForgeFileStatus {
+export enum FileStatus {
 	Processing = 1,
 	ChangesRequired = 2,
 	UnderReview = 3,
@@ -165,176 +165,176 @@ export enum CurseForgeFileStatus {
 	FailedPublishing = 15,
 }
 
-export interface CurseForgeFingerprintFuzzyMatchRaw {
+export interface FingerprintFuzzyMatchRaw {
 	id: number,
-	file: CurseForgeFileRaw,
-	latestFiles: CurseForgeFileRaw[],
+	file: FileRaw,
+	latestFiles: FileRaw[],
 	fingerprints: number[],
 }
 
-export interface CurseForgeFingerprintFuzzyMatchResult {
-	fuzzyMatches: CurseForgeFingerprintFuzzyMatchRaw[],
+export interface FingerprintFuzzyMatchResult {
+	fuzzyMatches: FingerprintFuzzyMatchRaw[],
 }
 
-export interface CurseForgeFingerprintMatchRaw {
+export interface FingerprintMatchRaw {
 	id: number,
-	file: CurseForgeFileRaw,
-	latestFiles: CurseForgeFileRaw[],
+	file: FileRaw,
+	latestFiles: FileRaw[],
 }
 
-export interface CurseForgeFingerprintsMatchesResult {
+export interface FingerprintsMatchesResult {
 	isCacheBuilt: boolean,
-	exactMatches: CurseForgeFingerprintMatchRaw[],
+	exactMatches: FingerprintMatchRaw[],
 	exactFingerprints: number[],
-	partialMatches: CurseForgeFingerprintMatchRaw[],
+	partialMatches: FingerprintMatchRaw[],
 	partialMatchFingerprints: object,
 	additionalProperties: number[],
 	installedFingerprints: number[],
 	unmatchedFingerprints: number[],
 }
 
-export interface CurseForgeFolderFingerprint {
+export interface FolderFingerprint {
 	foldername: string,
 	fingerprints: number[],
 }
 
-export interface CurseForgeGameRaw {
+export interface GameRaw {
 	id: number,
 	name: string,
 	slug: string,
 	dateModified: Date,
-	assets: CurseForgeGameAssets,
-	status: CurseForgeCoreStatus,
-	apiStatus: CurseForgeCoreApiStatus,
+	assets: GameAssets,
+	status: CoreStatus,
+	apiStatus: CoreApiStatus,
 }
 
-export interface CurseForgeGameAssets {
+export interface GameAssets {
 	iconUrl: string,
 	tileUrl: string,
 	coverUrl: string,
 }
 
-export interface CurseForgeGameVersionsByType {
+export interface GameVersionsByType {
 	type: number,
 	versions: string[],
 }
 
-export enum CurseForgeGameVersionStatus {
+export enum GameVersionStatus {
 	Approved = 1,
 	Deleted = 2,
 	New = 3,
 }
 
-export interface CurseForgeGameVersionType {
+export interface GameVersionType {
 	id: number,
 	gameId: number,
 	name: string,
 	slug: string,
 }
 
-export enum CurseForgeGameVersionTypeStatus {
+export enum GameVersionTypeStatus {
 	Normal = 1,
 	Deleted = 2,
 }
 
-export interface CurseForgeGetCategoriesResponseRaw {
+export interface GetCategoriesResponseRaw {
 	/** The response data. */
-	data: CurseForgeCategory[],
+	data: Category[],
 }
 
-export interface CurseForgeGetFeaturedModsResponseRaw {
+export interface GetFeaturedModsResponseRaw {
 	/** The response data. */
-	data: CurseForgeFeaturedModsResponse,
+	data: FeaturedModsResponse,
 }
 
-export interface CurseForgeGetFilesResponseRaw {
+export interface GetFilesResponseRaw {
 	/** The response data. */
-	data: CurseForgeFileRaw[],
+	data: FileRaw[],
 }
 
-export interface CurseForgeGetFingerprintMatchesResponseRaw {
+export interface GetFingerprintMatchesResponseRaw {
 	/** The response data. */
-	data: CurseForgeFingerprintsMatchesResult,
+	data: FingerprintsMatchesResult,
 }
 
-export interface CurseForgeGetFingerprintsFuzzyMatchesResponseRaw {
+export interface GetFingerprintsFuzzyMatchesResponseRaw {
 	/** The response data. */
-	data: CurseForgeFingerprintFuzzyMatchResult,
+	data: FingerprintFuzzyMatchResult,
 }
 
-export interface CurseForgeGetGameResponseRaw {
+export interface GetGameResponseRaw {
 	/** The response data. */
-	data: CurseForgeGameRaw,
+	data: GameRaw,
 }
 
-export interface CurseForgeGetGamesResponseRaw {
+export interface GetGamesResponseRaw {
 	/** The response data. */
-	data: CurseForgeGameRaw[],
+	data: GameRaw[],
 	/** The response pagination information. */
-	pagination: CurseForgePagination,
+	pagination: Pagination,
 }
 
-export interface CurseForgeGetModFileResponseRaw {
+export interface GetModFileResponseRaw {
 	/** The response data. */
-	data: CurseForgeFileRaw,
+	data: FileRaw,
 }
 
-export interface CurseForgeGetModFilesResponseRaw {
+export interface GetModFilesResponseRaw {
 	/** The response data. */
-	data: CurseForgeFileRaw[],
+	data: FileRaw[],
 	/** The response pagination information. */
-	pagination: CurseForgePagination,
+	pagination: Pagination,
 }
 
-export interface CurseForgeGetModResponseRaw {
+export interface GetModResponseRaw {
 	/** The response data. */
-	data: CurseForgeModRaw,
+	data: ModRaw,
 }
 
-export interface CurseForgeGetModsResponseRaw {
+export interface GetModsResponseRaw {
 	/** The response data. */
-	data: CurseForgeModRaw[],
+	data: ModRaw[],
 }
 
-export interface CurseForgeGetVersionTypesResponseRaw {
+export interface GetVersionTypesResponseRaw {
 	/** The response data. */
-	data: CurseForgeGameVersionType[],
+	data: GameVersionType[],
 }
 
-export interface CurseForgeGetVersionsResponseRaw {
+export interface GetVersionsResponseRaw {
 	/** The response data. */
-	data: CurseForgeGameVersionsByType[],
+	data: GameVersionsByType[],
 }
 
-export interface CurseForgeGetFeaturedModsRequestBody {
+export interface GetFeaturedModsRequestBody {
 	gameId: number,
 	excludedModIds: number[],
 	gameVersionTypeId?: number,
 }
 
-export interface CurseForgeGetFingerprintMatchesRequestBody {
+export interface GetFingerprintMatchesRequestBody {
 	fingerprints: number[],
 }
 
-export interface CurseForgeGetFuzzyMatchesRequestBody {
+export interface GetFuzzyMatchesRequestBody {
 	gameId: number,
-	fingerprints: CurseForgeFolderFingerprint[],
+	fingerprints: FolderFingerprint[],
 }
 
-export interface CurseForgeGetModFilesRequestBody {
+export interface GetModFilesRequestBody {
 	fileIds: number[],
 }
 
-export interface CurseForgeGetModsByIdsListRequestBody {
+export interface GetModsByIdsListRequestBody {
 	modIds: number[],
 }
 
-export enum CurseForgeHashAlgo {
+export enum HashAlgo {
 	Sha1 = 1,
 	Md5 = 2,
 }
 
-export interface CurseForgeMinecraftGameVersion {
+export interface MinecraftGameVersion {
 	id: number,
 	gameVersionId: number,
 	versionString: string,
@@ -343,29 +343,29 @@ export interface CurseForgeMinecraftGameVersion {
 	approved: boolean,
 	dateModified: Date,
 	gameVersionTypeId: number,
-	gameVersionStatus: CurseForgeGameVersionStatus,
-	gameVersionTypeStatus: CurseForgeGameVersionTypeStatus,
+	gameVersionStatus: GameVersionStatus,
+	gameVersionTypeStatus: GameVersionTypeStatus,
 }
 
-export interface CurseForgeMinecraftModLoaderIndex {
+export interface MinecraftModLoaderIndex {
 	name: string,
 	gameVersion: string,
 	latest: boolean,
 	recommended: boolean,
 	dateModified: Date,
-	type: CurseForgeModLoaderType,
+	type: ModLoaderType,
 }
 
-export interface CurseForgeMinecraftModLoaderVersion {
+export interface MinecraftModLoaderVersion {
 	id: number,
 	gameVersionId: number,
 	minecraftGameVersionId: number,
 	forgeVersion: string,
 	name: string,
-	type: CurseForgeModLoaderType,
+	type: ModLoaderType,
 	downloadUrl: string,
 	filename: string,
-	installMethod: CurseForgeModLoaderInstallMethod,
+	installMethod: ModLoaderInstallMethod,
 	latest: boolean,
 	recommended: boolean,
 	approved: boolean,
@@ -377,16 +377,16 @@ export interface CurseForgeMinecraftModLoaderVersion {
 	additionalFilesJson: string,
 	modLoaderGameVersionId: number,
 	modLoaderGameVersionTypeId: number,
-	modLoaderGameVersionStatus: CurseForgeGameVersionStatus,
-	modLoaderGameVersionTypeStatus: CurseForgeGameVersionTypeStatus,
+	modLoaderGameVersionStatus: GameVersionStatus,
+	modLoaderGameVersionTypeStatus: GameVersionTypeStatus,
 	mcGameVersionId: number,
 	mcGameVersionTypeId: number,
-	mcGameVersionStatus: CurseForgeGameVersionStatus,
-	mcGameVersionTypeStatus: CurseForgeGameVersionTypeStatus,
+	mcGameVersionStatus: GameVersionStatus,
+	mcGameVersionTypeStatus: GameVersionTypeStatus,
 	installProfileJson: string,
 }
 
-export interface CurseForgeModRaw {
+export interface ModRaw {
 	/** The mod id. */
 	id: number,
 	/** The game id this mod is for. */
@@ -396,11 +396,11 @@ export interface CurseForgeModRaw {
 	/** The mod slug that would appear in the URL. */
 	slug: string,
 	/** Relevant links for the mod such as Issue tracker and Wiki. */
-	links: CurseForgeModLinks,
+	links: ModLinks,
 	/** Mod summary. */
 	summary: string,
 	/** Current mod status. */
-	status: CurseForgeModStatus,
+	status: ModStatus,
 	/** Number of downloads for the mod. */
 	downloadCount: number,
 	/** Whether the mod is included in the featured mods list. */
@@ -408,21 +408,21 @@ export interface CurseForgeModRaw {
 	/** The main category of the mod as it was chosen by the mod author. */
 	primaryCategoryId: number,
 	/** List of categories that this mod is related to. */
-	categories: CurseForgeCategory[],
+	categories: Category[],
 	/** The class id this mod belongs to. */
 	classId?: number,
 	/** List of the mod's authors. */
-	authors: CurseForgeModAuthor[],
+	authors: ModAuthor[],
 	/** The mod's logo asset. */
-	logo: CurseForgeModAsset,
+	logo: ModAsset,
 	/** List of screenshots assets. */
-	screenshots: CurseForgeModAsset[],
+	screenshots: ModAsset[],
 	/** The id of the main file of the mod. */
 	mainFileId: number,
 	/** List of latest files of the mod. */
-	latestFiles: CurseForgeFileRaw[],
+	latestFiles: FileRaw[],
 	/** List of file related details for the latest files of the mod. */
-	latestFilesIndexes: CurseForgeFileIndex[],
+	latestFilesIndexes: FileIndex[],
 	/** The creation date of the mod. */
 	dateCreated: Date,
 	/** The last time the mod was modified. */
@@ -439,7 +439,7 @@ export interface CurseForgeModRaw {
 	thumbsUpCount: number,
 }
 
-export interface CurseForgeModAsset {
+export interface ModAsset {
 	id: number,
 	modId: number,
 	title: string,
@@ -448,26 +448,26 @@ export interface CurseForgeModAsset {
 	url: string,
 }
 
-export interface CurseForgeModAuthor {
+export interface ModAuthor {
 	id: number,
 	name: string,
 	url: string,
 }
 
-export interface CurseForgeModLinks {
+export interface ModLinks {
 	websiteUrl: string,
 	wikiUrl: string,
 	issuesUrl: string,
 	sourceUrl: string,
 }
 
-export enum CurseForgeModLoaderInstallMethod {
+export enum ModLoaderInstallMethod {
 	ForgeInstaller = 1,
 	ForgeJarInstall = 2,
 	ForgeInstaller_v2 = 3,
 }
 
-export enum CurseForgeModLoaderType {
+export enum ModLoaderType {
 	Any = 0,
 	Forge = 1,
 	Cauldron = 2,
@@ -476,7 +476,7 @@ export enum CurseForgeModLoaderType {
 	Quilt = 5,
 }
 
-export enum CurseForgeModsSearchSortField {
+export enum ModsSearchSortField {
 	Featured = 1,
 	Popularity = 2,
 	LastUpdated = 3,
@@ -487,7 +487,7 @@ export enum CurseForgeModsSearchSortField {
 	GameVersion = 8,
 }
 
-export enum CurseForgeModStatus {
+export enum ModStatus {
 	New = 1,
 	ChangesRequired = 2,
 	UnderSoftReview = 3,
@@ -500,7 +500,7 @@ export enum CurseForgeModStatus {
 	UnderReview = 10,
 }
 
-export interface CurseForgePagination {
+export interface Pagination {
 	/** A zero based index of the first item that is included in the response. */
 	index: number,
 	/** The requested number of items to be included in the response. */
@@ -511,14 +511,14 @@ export interface CurseForgePagination {
 	totalCount: number,
 }
 
-export interface CurseForgeSearchModsResponseRaw {
+export interface SearchModsResponseRaw {
 	/** The response data. */
-	data: CurseForgeModRaw[],
+	data: ModRaw[],
 	/** The response pagination information. */
-	pagination: CurseForgePagination,
+	pagination: Pagination,
 }
 
-export interface CurseForgeSortableGameVersion {
+export interface SortableGameVersion {
 	/** Original version name (e.g. 1.5b). */
 	gameVersionName: string,
 	/** Used for sorting (e.g. 0000000001.0000000005). */
@@ -531,12 +531,12 @@ export interface CurseForgeSortableGameVersion {
 	gameVersionTypeId?: number,
 }
 
-export enum CurseForgeSortOrder {
+export enum SortOrder {
 	Ascending = 'asc',
 	Descending = 'desc',
 }
 
-export interface CurseForgeStringResponseRaw {
+export interface StringResponseRaw {
 	/** The response data. */
 	data: string,
 }

@@ -1,9 +1,9 @@
-import CurseForgeClient from './Client.js';
+import Client from './Client.js';
 
-export default class CurseForgeBase {
-	client: CurseForgeClient;
+export default class Base {
+	client: Client;
 
-	constructor(client: CurseForgeClient) {
+	constructor(client: Client) {
 		this.client = client;
 	}
 }
